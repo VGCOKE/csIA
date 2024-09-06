@@ -22,7 +22,7 @@ import { RouterLink, RouterView } from 'vue-router'
             </a>
           </li>
           <li>
-            <a href="/draw" class="nav-link active" aria-current="page">
+            <a href="/randomdraw" class="nav-link active" aria-current="page">
               <div class="icon-wrap">
                 <i class="bi bi-shuffle"></i>
               </div>
@@ -56,6 +56,7 @@ import { RouterLink, RouterView } from 'vue-router'
   transition: 0.8s;
   position: fixed;
   transition: all 1000ms ease;
+  z-index: 1;
 }
 .sidebar-wrap:hover{
   width: 20%;

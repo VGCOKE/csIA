@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import RandomDraw from '../views/RandomDraw.vue'
+import DrawPage from '../views/DrawPage.vue'
 import History from '../views/History.vue'
 import Summary from '../views/Summary.vue'
 
@@ -16,12 +17,20 @@ const router = createRouter({
       }
     },
     {
-      path: '/draw',
-      name: 'draw',
+      path: '/randomdraw',
+      name: 'randomdraw',
       component: RandomDraw,
       meta: {
         title: 'Random Draw Page'
-      }
+      },
+    },
+    {
+      path: '/drawpage',
+      name: 'draw',
+      component: DrawPage,
+      meta: {
+        title: 'Draw Page'
+      },
     },
     {
       path: '/history',

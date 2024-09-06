@@ -8,4 +8,6 @@ html{
     position: relative;
     margin-left: 13%;
     text-align: left;
+    z-index: 2;
 }
+
