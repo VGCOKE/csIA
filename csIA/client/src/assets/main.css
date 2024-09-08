@@ -1,13 +1,27 @@
-/*@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
 *{
-    font-family: "Roboto", sans-serif;
-}*/
+    font-family: "Lexend", sans-serif;
+}*
+
+#app, html{
+    background-color: white;
+}
 
 html{
-    top: 10%;
-    position: relative;
-    margin-left: 13%;
+    position: fixed;
     text-align: left;
-    z-index: 2;
+    width: 100%;
+}
+@media (max-width: 768px){
+    #app, html{
+        z-index: 1000;
+    }
+}
+@media (min-width: 768px){
+    html{
+        top: 10%;
+        padding-left: 11%;
+    }
 }
 

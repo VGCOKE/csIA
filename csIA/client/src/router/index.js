@@ -25,11 +25,11 @@ const router = createRouter({
       },
     },
     {
-      path: '/drawpage',
+      path: '/draw',
       name: 'draw',
       component: DrawPage,
       meta: {
-        title: 'Draw Page'
+        title: 'Drawing wheel Page'
       },
     },
     {
@@ -37,7 +37,7 @@ const router = createRouter({
       name: 'history',
       component: History,
       meta: {
-        title: 'History Page'
+        title: 'History'
       }
     },
     {
@@ -45,7 +45,7 @@ const router = createRouter({
       name: 'summary',
       component: Summary,
       meta: {
-        title: 'Summary Page'
+        title: 'Summary'
       }
     }
   ]

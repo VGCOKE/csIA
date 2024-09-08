@@ -1,9 +1,18 @@
 <template id="history">
-    <header>
-        <div class="h-wrap container text-center">
-            <h1>History page</h1><a type="button" class="btn btn-outline-dark btn-lg" href="/summary">Summary</a>
+    <body>
+        <div class="container rows-cols-auto">
+            <table class="table table-striped table-hover">
+                <threa>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Restaurant name</th>
+                        <th scope="col">Address</th>
+                    </tr>
+                </threa>
+            </table>
         </div>
-    </header>
+    </body>
 </template>
 
 <style>
