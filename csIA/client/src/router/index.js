@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import RandomDraw from '../views/RandomDraw.vue'
 import DrawPage from '../views/DrawPage.vue'
 import History from '../views/History.vue'
+import HistoryDetailView from '../views/HistoryDetailView.vue'
 import Summary from '../views/Summary.vue'
 
 const router = createRouter({
@@ -38,6 +39,14 @@ const router = createRouter({
       component: History,
       meta: {
         title: 'History'
+      }
+    },
+    {
+      path: '/history/:id',
+      name: 'history-detail',
+      component: HistoryDetailView,
+      meta: {
+        title: 'History details'
       }
     },
     {

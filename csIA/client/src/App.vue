@@ -24,10 +24,10 @@ const backButton = computed(() => {
 
       <h1>{{ route.meta.title || 'Restaurant random picker' }}</h1>
       <div v-if="showSummaryButton" class="summary-button-container">
-        <a class="btn btn-dark btn-lg" href="/summary">Summary</a>
+        <a class="btn btn-dark" href="/summary">Summary</a>
       </div>
       <div v-if="backButton" class="back-button-container">
-        <a class="btn btn-dark btn-lg" onclick="history.back()">Back</a>
+        <a class="btn btn-dark" onclick="history.back()">Back</a>
       </div>
   </header>
   
@@ -181,6 +181,11 @@ hr{
   header{
     padding-right: 60px;
     padding-bottom: 10px;
+  }
+  .summary-button-container .btn, .back-button-container .btn{
+    padding: 10px 20px;
+    font-size: 20px;
+    margin-right: 20px;
   }
 }
 
