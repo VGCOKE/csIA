@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import RandomDraw from '../views/RandomDraw.vue'
-import DrawPage from '../views/DrawPage.vue'
+import RandomPicker from '../views/RandomPicker.vue'
+import SpinningWheel from '../views/SpinningWheel.vue'
 import History from '../views/History.vue'
 import HistoryDetailView from '../views/HistoryDetailView.vue'
 import Summary from '../views/Summary.vue'
@@ -18,19 +18,19 @@ const router = createRouter({
       }
     },
     {
-      path: '/randomdraw',
-      name: 'randomdraw',
-      component: RandomDraw,
+      path: '/randompicker',
+      name: 'randompicker',
+      component: RandomPicker,
       meta: {
-        title: 'Random Draw Page'
+        title: 'Random Picker'
       },
     },
     {
-      path: '/draw',
-      name: 'draw',
-      component: DrawPage,
+      path: '/spin',
+      name: 'spin',
+      component: SpinningWheel,
       meta: {
-        title: 'Drawing wheel Page'
+        title: 'Spinning wheel'
       },
     },
     {

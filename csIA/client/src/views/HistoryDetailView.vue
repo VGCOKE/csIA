@@ -4,11 +4,9 @@ export default {
     data() {
         return {
         recordId: this.id, 
-        // ... other data properties to fetch and display detailed record information
         };
     },
     mounted() {
-        // Fetch the detailed record data from your backend using the recordId
     },
 };
 </script>

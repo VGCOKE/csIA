@@ -1,7 +1,7 @@
 <script>
     import VueWheelSpinner from 'vue-wheel-spinner';
 
-    // import cursorImage from './assets/cursor.svg';
+    // import cursorImage from 'client/src/assets/cursor3.svg';
     // import wonSound from './sounds/won.mp3';
     // import clickSound from './sounds/click.mp3';
     // import hoverSound from './sounds/hover.mp3';
@@ -16,12 +16,12 @@
         return {
             winnerResult: null,
             slices: [
-            {color: '#eb4d4b', text: 'Slice 1'},
-            {color: '#f0932b', text: 'Slice 2'},
-            {color: '#f9ca24', text: 'Slice 3'},
-            {color: '#badc58', text: 'Slice 4'},
-            {color: '#7ed6df', text: 'Slice 5'},
-            {color: '#e056fd', text: 'Slice 6'}
+            {color: '#EC5800', text: 'Slice 1'},
+            {color: '#F89880', text: 'Slice 2'},
+            {color: '#FF5F15', text: 'Slice 3'},
+            {color: '#FA8072', text: 'Slice 4'},
+            {color: '#FFF5EE', text: 'Slice 5'},
+            {color: '#FFAA33', text: 'Slice 6'}
             ],
             isSpinning: false,
             defaultWinner: 0,
@@ -32,10 +32,10 @@
         //     spinButtonLeave: leaveSound,
         //     spinning: spinningSound
         //     },
-        //     cursorImage,
-        //     cursorAngle: 0,
-        //     cursorPosition: 'edge',
-        //     cursorDistance: 0
+            // cursorImage,
+            // cursorAngle: 0,
+            // cursorPosition: 'edge',
+            // cursorDistance: 0
         };
         },
         methods: {
@@ -83,40 +83,47 @@
 </script>
 
 <template>
-    <VueWheelSpinner
-        ref="spinner"
-        :slices="slices"
-        :winner-index="defaultWinner"
-        :sounds="sounds"
-        :cursor-angle="cursorAngle"
-        :cursor-position="cursorPosition"
-        :cursor-distance="cursorDistance"
-        @spin-start="onSpinStart"
-        @spin-end="onSpinEnd">
+    <div class="container">
+            <VueWheelSpinner
+            class="spinner"
+            ref="spinner"
+            :slices="slices"
+            :winner-index="defaultWinner"
+            :sounds="sounds"
+            :cursor-angle="cursorAngle"
+            :cursor-position="cursorPosition"
+            :cursor-distance="cursorDistance"
+            @spin-start="onSpinStart"
+            @spin-end="onSpinEnd">
 
-        <template #cursor>
-        <img class="cursor-img" :src="cursorImage" alt="Cursor">
-        </template>
+            <template #cursor>
+            <img class="cursor-img" :src="cursorImage" alt="Cursor">
+            </template>
 
-        <template #default>
-        <button
-            class="spin-button"
-            :disabled="isSpinning"
-            @click="handleSpinButtonClick"
-            @mouseover="handleSpinButtonHover"
-            @mouseleave="handleSpinButtonLeave">
-            Spin
-        </button>
-        </template>
+            <template #default>
+            <button
+                class="spin-button"
+                :disabled="isSpinning"
+                @click="handleSpinButtonClick"
+                @mouseover="handleSpinButtonHover"
+                @mouseleave="handleSpinButtonLeave">
+                Spin
+            </button>
+            </template>
 
-    </VueWheelSpinner>
+        </VueWheelSpinner>
+    </div>
 </template>
 
 <style>
+.container{
+    margin: 20px;
+    max-width: 600px;
+}
 .cursor-img {
     width: 50px;
     aspect-ratio: 1 / 1;
-    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.19));
+    filter: drop-shadow(3px 3px 2px rgba(169, 169, 169, 0.19));
 }
 .spin-button {
     width: 100px;
@@ -125,10 +132,10 @@
     aspect-ratio: 1 / 1;
     font-size: 20px;
     cursor: pointer;
-    background: #eb4d4b;
+    background: #ffb868;
     border-radius: 50%;
     transition: all 150ms;
-    border: 10px solid white;
+    border: 5px solid white;
     display: flex;
     align-items: center;
     justify-content: center;

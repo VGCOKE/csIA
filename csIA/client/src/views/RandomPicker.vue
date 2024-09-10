@@ -121,7 +121,7 @@ export default {
                             <small class="text-body-secondary">400m</small>
                         </a>
                     </div>
-                    <a href="/draw" class="btn">Draw</a>
+                    <a href="/spin" class="btn">Spin</a>
                 </div>
             </div>
         </div>
@@ -141,13 +141,15 @@ export default {
     background-color: #fff;
 }
 .dropdown .btn-group .btn, 
-.container .map-list .tray .restaurant-list .active,
-.container .map-list .tray .btn{
+.container .map-list .tray .restaurant-list .active{
     background-color: #fee3b5;
     color: #343a40;
     border: 1px solid #fbebdd;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+}
+.container .map-list .tray .btn{
+    background-color: #FFAA33;
 }
 .dropdown .btn-group .btn:hover, 
 .dropdown .btn-group .btn:focus, 

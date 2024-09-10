@@ -12,7 +12,7 @@ const showSummaryButton = computed(() => {
   return route.name === 'history';
 });
 const backButton = computed(() => {
-  return route.name === 'summary'|| route.name === 'draw';
+  return route.name === 'summary'|| route.name === 'spin';
 });
 </script>
 
@@ -45,7 +45,7 @@ const backButton = computed(() => {
       <hr>
         <ul class="nav nav-pills flex-column mb-auto">
           <li>
-            <a href="/randomdraw" class="nav-link active" aria-current="page">
+            <a href="/randompicker" class="nav-link active" aria-current="page">
               <div class="icon-wrap">
                 <i class="bi bi-shuffle"></i>
               </div>
