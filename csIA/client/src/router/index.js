@@ -14,7 +14,7 @@ const router = createRouter({
       name: 'Home',
       component: Home,
       meta: {
-        title: 'Home Page'
+        title: 'Home'
       }
     },
     {

@@ -1,35 +1,5 @@
 <script>
-export default {
-    data() {
-        return {
-        historyRecords: [],
-        currentPage: 1,
-        totalPages: 1, 
-        perPage: 10, 
-        };
-    },
-    async mounted() {
-        await this.fetchHistory();
-    },
-    methods: {
-        async fetchHistory() {
-        try {
-            const response = await fetch(`http://127.0.0.1:5000/api/history?page=${this.currentPage}&per_page=${this.perPage}`);
-            const data = await response.json();
-            this.historyRecords = data.data;
-            this.totalPages = data.total_pages; 
-        } catch (error) {
-            console.error('Error fetching history:', error);
-        }
-        },
-        async goToPage(page) {
-        if (page >= 1 && page <= this.totalPages) {
-            this.currentPage = page;
-            await this.fetchHistory(); 
-        }
-        },
-    },
-};
+
 </script>
 
 <template id="history">
@@ -82,18 +52,18 @@ export default {
 
 <style scoped>
 .container .table-list{
-    background-color: #fff5ee; 
+    background-color: #f4e7d2; 
     color: white; 
     padding: 40px;
     border-radius: 20px;
 }
 .container .table-list .table .table th{
-    background-color: #ffdda7;
+    background-color: #e7b99a;
     color: #000000;
     font-weight: 500;
 }
 .container .table-list .table .table-group-divider zootd{
-    background-color: #fffaf8;
+    background-color: #eeeee4;
     color: #454649;
 }
 .container .table-list .page-scroll{

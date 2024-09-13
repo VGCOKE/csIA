@@ -49,7 +49,7 @@ const backButton = computed(() => {
               <div class="icon-wrap">
                 <i class="bi bi-shuffle"></i>
               </div>
-              <span>Random draw</span>
+              <span>Random picker</span>
             </a>
           </li>
           <li>
@@ -138,7 +138,7 @@ hr{
   border-radius: 0.5px;
 }
 .sidebar-wrap, .sidebar-wrap .nav li .nav-link.active, .mobile-menu-button{
-  background-color: #ff914c;
+  background-color: #cc9c53;
 }
 .close-button, .sidebar-wrap .nav li .nav-link, hr, .sidebar-wrap .logo-wrap, .mobile-menu-button{
   color: #fff4ea;
@@ -181,6 +181,7 @@ hr{
   header{
     padding-right: 60px;
     padding-bottom: 10px;
+    padding-left: 1%;
   }
   .summary-button-container .btn, .back-button-container .btn{
     padding: 10px 20px;
