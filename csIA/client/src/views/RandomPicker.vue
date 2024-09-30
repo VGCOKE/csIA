@@ -1,6 +1,7 @@
 <script>
 import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
+import axios from 'axios';
 
 export default {
     components: {
@@ -10,14 +11,64 @@ export default {
     data() {
         return {
             zoom: 2,
-            isTrayOpen: false 
+            isTrayOpen: false,
+            selectedDistance: null,
+            selectedPrice: null,
+            selectedType: null,
+            restaurant:[]
         };
+    },
+    watch: {
+        selectedDistance: function(newVal, oldVal) {
+        if (newVal && this.selectedPrice && this.selectedType) {
+            this.onSubmit();
+        }
+        },
+        selectedPrice: function(newVal, oldVal) {
+        if (this.selectedDistance && newVal && this.selectedType) {
+            this.onSubmit();
+        }
+        },
+        selectedType: function(newVal, oldVal) {
+        if (this.selectedDistance && this.selectedPrice && newVal) {
+            this.onSubmit();
+        }
+        },
     },
     methods: {
         toggleTray() {
             this.isTrayOpen = !this.isTrayOpen;
+        },
+        onSubmit() {
+            if (!this.selectedDistance || !this.selectedPrice || !this.selectedType) {
+                return;
+            }
+            axios.post('/filters', {
+                distance: this.selectedDistance,
+                price: this.selectedPrice,
+                type: this.selectedType
+            })
+            .then ((res) => {
+                console.log('Filters applied:', res.data);
+            })
+            .catch((err) => {
+                console.log(err)
+            });
+        },
+        getRestaurant(){
+            axios.get('http://127.0.0.1:5000/')
+            .then ((res) => {
+                console.log(res.data)
+                this.restaurant = res.data.restaurant;
+            })
+            .catch((err) => {
+                console.log(err)
+            });
         }
     },
+    created(){
+        this.getRestaurant();
+    }
 }
 </script>
 
@@ -27,31 +78,36 @@ export default {
                 <div class="btn-group col">
                     <span type="button" class="btn">Distance:</span>
                     <select class="form-select" v-model="selectedDistance">
-                        <option selected>Open this select menu</option>
+                        <option selected disabled>Choose distance</option>
                         <option value="1">200m</option>
                         <option value="2">300m</option>
+                        <option value="2">400m</option>
+                        <option value="2">500m</option>
                     </select>
                 </div>
                 <div class="btn-group col">
                     <span type="button" class="btn">Price:</span>
                     <select class="form-select" v-model="selectedPrice">
-                        <option selected>Open this select menu</option>
+                        <option selected disabled>Choose price</option>
                         <option value="1">under $50</option>
-                        <option value="2">under $60</option>
+                        <option value="2">under $65</option>
+                        <option value="2">under $80</option>
+                        <option value="2">under $100</option>
                     </select>
                 </div>
                 <div class="btn-group col">
                     <span type="button" class="btn">Type:</span>
                     <select class="form-select" v-model="selectedType">
-                        <option selected>Open this select menu</option>
+                        <option selected disabled>Choose type</option>
                         <option value="1">fast food</option>
                         <option value="2">sushi</option>
+                        <option value="2">cha chaan tang</option>
                     </select>
                 </div>
             </div>
             <div class="map-list row">
                 <div id="map" class="map col-8">
-                    <l-map ref="map" v-model:zoom="zoom" :center="[47.41322, -1.219482]">
+                    <l-map ref="map" :useGlobalLeaflet="false" v-model:zoom="zoom" :center="[47.41322, -1.219482]">
                         <l-tile-layer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             layer-type="base"
@@ -70,41 +126,12 @@ export default {
                                 <small>num</small>
                             </div>
                         </a>
-                        <a class="list-group-item item">
+                        <a v-for="restaurant, index in restaurant" :key="index" class="list-group-item item">
                             <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Restaurant name</h5>
+                                <h5 class="mb-1">{{ restaurant.name }}</h5>
                             </div>
                             <p class="mb-1">~X mins walk</p>
-                            <small class="text-body-secondary">400m</small>
-                        </a>
-                        <a class="list-group-item item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Restaurant name</h5>
-                            </div>
-                            <p class="mb-1">~X mins walk</p>
-                            <small class="text-body-secondary">400m</small>
-                        </a>
-                        <a class="list-group-item item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Restaurant name</h5>
-                            </div>
-                            <p class="mb-1">~X mins walk</p>
-                            <small class="text-body-secondary">400m</small>
-                        </a>
-                        
-                        <a class="list-group-item item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Restaurant name</h5>
-                            </div>
-                            <p class="mb-1">~X mins walk</p>
-                            <small class="text-body-secondary">400m</small>
-                        </a>
-                        <a class="list-group-item item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Restaurant name</h5>
-                            </div>
-                            <p class="mb-1">~X mins walk</p>
-                            <small class="text-body-secondary">400m</small>
+                            <small class="text-body-secondary">{{ restaurant.distance }}</small>
                         </a>
                     </div>
                     <a href="/spin" class="btn">Spin</a>
@@ -128,6 +155,7 @@ export default {
     box-shadow: 0px 2px 4px rgba(207, 207, 207, 0.1);
     background-color: #fff;
 }
+
 .dropdown .btn-group .btn{
     background-color: #fee3b5;
     color: #343a40;
@@ -136,7 +164,7 @@ export default {
 }
 .container .map-list .tray .restaurant-list .active{
     border: none;
-    background-color: #e7b797;
+    background-color: #dcb081;
     color: #343a40;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -148,7 +176,7 @@ export default {
 .dropdown .btn-group .btn:hover, 
 .dropdown .btn-group .btn:focus, 
 .container .map-list .tray .restaurant-list .active:hover{
-    background-color: #dcb081;
+    background-color: #fee3b5;
     color: #212529; 
 }
 .container .map-list .tray .restaurant-list .item{
@@ -174,7 +202,7 @@ export default {
     }
     #map{
         aspect-ratio: 4/3;
-        width: 70%;
+        height: 80%;
     }
     .dropdown .btn-group .btn{
         padding: 8px 12px;
@@ -186,9 +214,9 @@ export default {
     }
     .container .map-list .tray .restaurant-list{
         width: 100%;
-        max-height: 430px;
         overflow-y: auto;
         margin: 10px;
+        max-height: 80%;
     }
     .container .map-list .tray .btn{
         width: 100%;

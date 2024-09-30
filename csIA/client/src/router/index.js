@@ -42,14 +42,6 @@ const router = createRouter({
       }
     },
     {
-      path: '/history/:id',
-      name: 'history-detail',
-      component: HistoryDetailView,
-      meta: {
-        title: 'History details'
-      }
-    },
-    {
       path: '/summary',
       name: 'summary',
       component: Summary,

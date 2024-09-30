@@ -1,5 +1,7 @@
 <script>
     import VueWheelSpinner from 'vue-wheel-spinner';
+    import { Modal } from 'bootstrap';
+    import axios from 'axios';
 
     // import cursorImage from 'client/src/assets/cursor3.svg';
     // import wonSound from './sounds/won.mp3';
@@ -10,21 +12,22 @@
 
     export default {
         components: {
-        VueWheelSpinner
+            VueWheelSpinner
+        },
+        props: {
+            restaurants: {
+                type: Array,
+                required: true
+            }
         },
         data() {
         return {
             winnerResult: null,
-            slices: [
-            {color: '#EC5800', text: 'Slice 1'},
-            {color: '#F89880', text: 'Slice 2'},
-            {color: '#FF5F15', text: 'Slice 3'},
-            {color: '#FA8072', text: 'Slice 4'},
-            {color: '#FFF5EE', text: 'Slice 5'},
-            {color: '#FFAA33', text: 'Slice 6'}
-            ],
             isSpinning: false,
             defaultWinner: 0,
+            restaurants: [],
+            usedColors: [],
+            winnerModal: null,
         //     sounds: {
         //     won: wonSound,
         //     spinButtonClick: clickSound,
@@ -38,56 +41,126 @@
             // cursorDistance: 0
         };
         },
+        computed: {
+            restaurantSlices() {
+                this.usedColors = [];
+                return this.restaurants ? this.restaurants.map(restaurant => ({
+                    color: this.getUniqueRandomColor(),
+                    text: restaurant.name
+                })): [];
+            }
+        }, 
         methods: {
-        playAudio(audio) {
-            if (audio) {
-            audio.volume = 0.5
-            audio.play();
+            handleDirectionAndSave() {
+                if (this.winnerResult) {
+                    this.saveWinnerToHistory()
+                    .then(() => {
+                        this.redirectToGoogleMap();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+                }
+            },
+            saveWinnerToHistory() {
+                const winnerData = {
+                    name: this.winnerResult.text,
+                };
+
+                return axios.post('http://127.0.0.1:5000/history', winnerData) 
+                    .then(response => {
+                    console.log('Winner saved to history:', response.data);
+                    });
+                },
+
+                redirectToGoogleMap() {
+                const restaurantName = encodeURIComponent(this.winnerResult.text);
+                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${restaurantName}`;
+                window.location.href = googleMapsUrl;
+            },
+            getRandomColor() {
+                const orangeShades = [
+                    '#FFA500',
+                    '#FF8C00',
+                    '#FF7F50',
+                    '#FFD700',
+                    '#FFE4B5',
+                    '#FFFAF0',
+                    '#FFFFFF' 
+                ];
+                const randomIndex = Math.floor(Math.random() * orangeShades.length);
+                return orangeShades[randomIndex];
+            },
+            getUniqueRandomColor() {
+                let newColor;
+                do {
+                    newColor = this.getRandomColor();
+                } while (this.usedColors.includes(newColor));
+
+                this.usedColors.push(newColor);
+                return newColor;
+            },
+            playAudio(audio) {
+                if (audio) {
+                audio.volume = 0.5
+                audio.play();
+                }
+            },
+            handleSpinButtonClick() {
+                if (this.buttonClickAudio) {
+                this.playAudio(this.buttonClickAudio)
+                }
+                this.$refs.spinner.spinWheel(this.defaultWinner);
+            },
+            handleSpinButtonHover() {
+                if (this.buttonHoverAudio) {
+                this.playAudio(this.buttonHoverAudio)
+                }
+            },
+            handleSpinButtonLeave() {
+                if (this.buttonLeaveAudio) {
+                this.playAudio(this.buttonLeaveAudio)
+                }
+            },
+            spinFor(index) {
+                this.defaultWinner = index;
+                this.$refs.spinner.spinWheel(index);
+            },
+            onSpinStart() {
+                this.winnerResult = null;
+                this.isSpinning = true;
+            },
+            onSpinEnd(winnerIndex) {
+                this.isSpinning = false;
+                this.winnerResult = this.restaurantSlices[winnerIndex];
+                this.winnerModal = new Modal(document.getElementById('winnerModal'))
+                this.winnerModal.show(); 
+            },
+            pickAgain() {
+                this.winnerModal.hide();
+                this.handleSpinButtonClick();
             }
+            },
+            mounted() {
+                //this.buttonHoverAudio = new Audio(hoverSound);
+                //this.buttonLeaveAudio = new Audio(leaveSound);
+                //this.buttonClickAudio = new Audio(clickSound);
+                axios.get('http://127.0.0.1:5000/')
+                    .then(response => {
+                        this.restaurants = response.data.restaurant;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                });
         },
-        handleSpinButtonClick() {
-            if (this.buttonClickAudio) {
-            this.playAudio(this.buttonClickAudio)
-            }
-            this.$refs.spinner.spinWheel(this.defaultWinner);
-        },
-        handleSpinButtonHover() {
-            if (this.buttonHoverAudio) {
-            this.playAudio(this.buttonHoverAudio)
-            }
-        },
-        handleSpinButtonLeave() {
-            if (this.buttonLeaveAudio) {
-            this.playAudio(this.buttonLeaveAudio)
-            }
-        },
-        spinFor(index) {
-            this.defaultWinner = index;
-            this.$refs.spinner.spinWheel(index);
-        },
-        onSpinStart() {
-            this.winnerResult = null;
-            this.isSpinning = true;
-        },
-        onSpinEnd(winnerIndex) {
-            this.isSpinning = false;
-            this.winnerResult = this.slices[winnerIndex];
-        }
-        },
-        mounted() {
-        this.buttonHoverAudio = new Audio(hoverSound);
-        this.buttonLeaveAudio = new Audio(leaveSound);
-        this.buttonClickAudio = new Audio(clickSound);
-        }
     };
 </script>
 
 <template>
     <div class="container">
             <VueWheelSpinner
-            class="spinner"
             ref="spinner"
-            :slices="slices"
+            :slices="restaurantSlices"
             :winner-index="defaultWinner"
             :sounds="sounds"
             :cursor-angle="cursorAngle"
@@ -110,15 +183,45 @@
                 Spin
             </button>
             </template>
-
         </VueWheelSpinner>
+    </div>
+    <div class="modal fade" id="winnerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">The winner restaurant is</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h2 v-if="winnerResult">{{ winnerResult.text }}</h2>
+                <p v-if="winnerResult"></p> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" @click="handleDirectionAndSave" data-bs-dismiss="modal">Direction + Save record</button>
+                <button type="button" class="btn btn-secondary" @click="pickAgain">Pick again</button>
+            </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <style>
+.modal .modal-dialog .modal-footer .btn-primary{
+    background-color: transparent;
+    color: #dcb081;
+    border: 2px solid #dcb081;
+}
+.modal .modal-dialog .modal-footer .btn-secondary{
+    background-color: #dcb081;
+    color: #343a40;
+    border: 2px solid #dcb081;
+}
 .container{
-    margin: 20px;
-    max-width: 600px;
+    height: 80%;
+    justify-content: center;
+}
+canvas{
+    max-width: 70% !important;
 }
 .cursor-img {
     width: 50px;

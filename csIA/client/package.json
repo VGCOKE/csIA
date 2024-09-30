@@ -11,6 +11,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@coreui/coreui": "^5.1.2",
+    "@coreui/vue": "^5.4.0",
+    "axios": "^1.7.7",
     "body-parser": "^1.20.2",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
